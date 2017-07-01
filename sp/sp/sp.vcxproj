@@ -122,6 +122,10 @@
     <ClCompile Include="week12.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="hash.h" />
+    <ClInclude Include="list.h" />
+    <ClInclude Include="listIterator.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="spellCheck.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
