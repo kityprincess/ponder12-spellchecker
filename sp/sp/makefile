@@ -20,9 +20,8 @@ a.out: week12.o spellCheck.o
 #      week12.o     : the driver program
 #      spellCheck.o   : the spell-check program and driver
 ##############################################################
-week12.o: hash.h week12.cpp list.h
+week12.o: hash.h week12.cpp list.h listIterator.h node.h 
 	g++ -c week12.cpp -g
 
 spellCheck.o: hash.h spellCheck.h spellCheck.cpp
 	g++ -c spellCheck.cpp -g
-
