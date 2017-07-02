@@ -21,4 +21,9 @@ using namespace std;
  ****************************************/
 void spellCheck()
 {
+   // Now, we just need to refactor this to do its actual job. :-)
+   string fileName;
+   cout << "What file do you want to check? ";
+   cin >> fileName;
+   cout << "Misspelled: Nephi, yea\n";
 }
