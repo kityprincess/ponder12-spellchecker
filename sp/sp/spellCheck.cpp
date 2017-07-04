@@ -7,8 +7,14 @@
 * Summary:
 *    This program will implement the spellCheck() function
 ************************************************************************/
+#ifdef DEBUG
+#define Debug(x) (x);
+#else
+#define Debug(x)
+#endif
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include "spellCheck.h"
@@ -66,8 +72,12 @@ void readDictionary(SHash & dictionaryTable)
 
    // since the dictionary file is always the same, we just
    // enter it into the ifstream ourselves
-   //ifstream fin("/home/cs235/week12/dictionary.txt");
+   //
+#ifdef DEBUG
    ifstream fin("dictionary.txt");
+#else
+   ifstream fin("/home/cs235/week12/dictionary.txt");
+#endif
    if (fin.fail())
    {
       cout << "Error, cannot read file";
@@ -80,8 +90,13 @@ void readDictionary(SHash & dictionaryTable)
       dictionaryTable.insert(word);
    }
    fin.close();
-   cout << "Empty Bucket Count" << dictionaryTable.emptyBucketCount() << endl;
-   cout << "Bucket Range" << dictionaryTable.bucketCountRange() << endl;
+   Debug(cout << "Empty Bucket Count: " << dictionaryTable.emptyBucketCount() << endl);
+#ifdef DEBUG
+   int min, max, range;
+   range = dictionaryTable.bucketCountRange(min, max); 
+   cout << "Bucket Range: " << range << "(" << min << ".." << max << ")\n";
+#endif
+   Debug(dictionaryTable.displayDistribution());
 }
 /*******************************************************
 * READ FILE
@@ -119,6 +134,12 @@ void readFile(SHash & dictionaryTable, vector <string> & missSpelled)
    fin.close();
 }
 
+#ifdef DEBUG
+/****************************************************************************
+* SHASH :: EMPTY BUCKET COUNT
+* For debugging purposes only. Counts the number of buckets in the hash table
+* that are empty
+****************************************************************************/
 int SHash::emptyBucketCount() const
 {
    int countBucket = 0;
@@ -132,23 +153,50 @@ int SHash::emptyBucketCount() const
    return countBucket++;
 }
 
-int SHash::bucketCountRange() const
+/****************************************************************************
+* SHASH :: BUCKET COUNT RANGE
+* For debugging purposes only. Gets the range of the length of chains in each
+* bucket of a hash table.
+****************************************************************************/
+int SHash::bucketCountRange(int & min, int & max) const
 {
-   int min = 0;
-   int max = 0;
-
    for (int i = 0; i < numBuckets; i++)
    {
       if (i == 0)
          min = max = table[i].size();
-      else
-      {
-         if (table[i].size() < min)
+      else if (table[i].size() < min)
             min = table[i].size();
-         if (table[i].size() > max)
+      else if (table[i].size() > max)
             max = table[i].size();
-      }
    }
 
    return max - min;
 }
+
+/****************************************************************************
+ * SHASH :: DISPLAY DISTRIBUTION
+ * For debugging purposes only. Shows a "graph of the distribution of a hash
+ * table's buckets
+ ****************************************************************************/
+void SHash :: displayDistribution() const
+{
+   int cols = 50;
+   for (int i = 0; i < capacity(); i++)
+   {
+      cout << "[" << setw(3) << i << "]: ";
+      int j;
+      for (j = 1; j <= table[i].size(); j++)
+      {
+         if (j == cols)
+            break;
+
+         cout << ".";
+      }
+
+      if (j < table[i].size())
+         cout << "+" << table[i].size() - cols;
+
+      cout << endl;
+   }
+}
+#endif
