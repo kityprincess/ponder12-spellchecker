@@ -33,9 +33,10 @@ void readFile(SHash & dictionaryTable, vector <string> & missSpelled);
 void spellCheck()
 {
    // Lets create a table to store the words.
-   // ran trial and error with num emptyBuckets
-   // range of buckets, closest to 0 we got
-   SHash dictionaryTable = SHash(73);
+   // tested bucket counts between 2 and 256
+   // and found 179 has the best range and no
+   // empty buckets
+   SHash dictionaryTable = SHash(179);
 
    // Lets store the strings in a vector
    vector <string> missSpelled = vector <string>();

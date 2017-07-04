@@ -110,7 +110,7 @@ Hash <T> :: Hash(const Hash <T> & rhs) throw (const char *)
 template <class T>
 Hash <T> & Hash <T> :: operator = (const Hash & rhs) throw (const char *)
 {
-   // TODO: Assignment needs to clear out the existing table, if it exists
+   clear();
    assert(rhs.numBuckets >= 0);
 
    // do nothing if there is nothing to do
@@ -147,10 +147,8 @@ Hash <T> & Hash <T> :: operator = (const Hash & rhs) throw (const char *)
 template <class T>
 void Hash <T> :: clear()
 {
-   // TODO: Clear needs to clear each element
-   // of the table array - not just the first
-   // - and needs to deallocate the table
-   table->clear();
+   delete[] table;
+   table = NULL;
    numElements = 0;
 }
 
