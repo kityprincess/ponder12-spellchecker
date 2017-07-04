@@ -42,7 +42,7 @@ public:
    // pure virtual hash function
    virtual int hash(const T & value) const = 0;
 
-private:
+protected:
    // memeber variables
    int numElements;
    int numBuckets;
