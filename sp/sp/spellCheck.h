@@ -18,7 +18,6 @@
 using namespace std;
 
 void spellCheck();
-void readFile(string counts, const string & fileName);
 
 /******************************************************
 * S HASH
@@ -29,6 +28,8 @@ class SHash : public Hash <string>
 public:
    SHash(int numBuckets)    throw (const char *) : Hash <string>(numBuckets) {}
    SHash(const SHash & rhs) throw (const char *) : Hash <string>(rhs) {}
+   int emptyBucketCount() const;
+   int bucketCountRange() const;
 
    // hash function for integers is simply to take the modulous
    int hash(const string & value) const
@@ -39,7 +40,7 @@ public:
       {
          // converts to int in order to store data
          collision = (int)value[i] + collision;
-      }
+      }      
       return abs(collision) % capacity();
    }
 };

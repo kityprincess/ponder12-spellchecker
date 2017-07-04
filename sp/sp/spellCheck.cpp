@@ -19,15 +19,17 @@ using namespace std;
 void readDictionary(SHash & dictionaryTable);
 void readFile(SHash & dictionaryTable, vector <string> & missSpelled);
 
+
 /****************************************
 * SPELL CHECK
 * Prompt the user for a file to spell-check
 ****************************************/
 void spellCheck()
 {
-   // Lets create a table to store the words.  Perhaps
-   // 100 is a bit much, but I don't know how many words are in the file
-   SHash dictionaryTable = SHash(100);
+   // Lets create a table to store the words.
+   // ran trial and error with num emptyBuckets
+   // range of buckets, closest to 0 we got
+   SHash dictionaryTable = SHash(73);
 
    // Lets store the strings in a vector
    vector <string> missSpelled = vector <string>();
@@ -55,7 +57,7 @@ void spellCheck()
 }
 
 /*******************************************************
-* READ FILE
+* READ DICTIONARY
 * Opens and reads the dictionary file
 *********************************************************/
 void readDictionary(SHash & dictionaryTable)
@@ -64,7 +66,8 @@ void readDictionary(SHash & dictionaryTable)
 
    // since the dictionary file is always the same, we just
    // enter it into the ifstream ourselves
-   ifstream fin("/home/cs235/week12/dictionary.txt");
+   //ifstream fin("/home/cs235/week12/dictionary.txt");
+   ifstream fin("dictionary.txt");
    if (fin.fail())
    {
       cout << "Error, cannot read file";
@@ -77,6 +80,8 @@ void readDictionary(SHash & dictionaryTable)
       dictionaryTable.insert(word);
    }
    fin.close();
+   cout << "Empty Bucket Count" << dictionaryTable.emptyBucketCount() << endl;
+   cout << "Bucket Range" << dictionaryTable.bucketCountRange() << endl;
 }
 /*******************************************************
 * READ FILE
@@ -112,4 +117,38 @@ void readFile(SHash & dictionaryTable, vector <string> & missSpelled)
       }
    }
    fin.close();
+}
+
+int SHash::emptyBucketCount() const
+{
+   int countBucket = 0;
+
+   for (int i = 0; i < numBuckets; i++)
+   {
+      if (table[i].size() == 0)
+         countBucket++;
+   }
+
+   return countBucket++;
+}
+
+int SHash::bucketCountRange() const
+{
+   int min = 0;
+   int max = 0;
+
+   for (int i = 0; i < numBuckets; i++)
+   {
+      if (i == 0)
+         min = max = table[i].size();
+      else
+      {
+         if (table[i].size() < min)
+            min = table[i].size();
+         if (table[i].size() > max)
+            max = table[i].size();
+      }
+   }
+
+   return max - min;
 }
